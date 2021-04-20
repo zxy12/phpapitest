@@ -1,0 +1,17 @@
+{
+    "name": "zxy12/phpapitest",
+    "authors": [
+        {
+            "name": "zxy",
+            "email": "zxy_200909@126.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload":{
+        "psr-4": {
+            "techo\\": "src/"
+        }
+    }
+}
