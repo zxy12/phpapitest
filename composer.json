@@ -6,6 +6,7 @@
             "email": "zxy_200909@126.com"
         }
     ],
+    "license": "MIT",
     "require": {
         "php": ">=5.3",
         "zelenin/http-client": "~4.0.0",
