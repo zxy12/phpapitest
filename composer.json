@@ -7,7 +7,9 @@
         }
     ],
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "zelenin/http-client": "~4.0.0",
+        "catfan/medoo": "^1.7"
     },
     "autoload":{
         "psr-4": {
