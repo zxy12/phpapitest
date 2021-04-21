@@ -14,7 +14,9 @@
     },
     "autoload":{
         "psr-4": {
-            "techo\\": "src/"
+            "techo\\": "src/",
+            "apitest\\": "src/",
+            "apitest\\assert\\": "src/assert/"
         }
     }
 }
