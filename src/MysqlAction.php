@@ -2,7 +2,7 @@
 
 namespace apitest;
 
-class MysqlAction implements IAction {
+abstract class MysqlAction implements IAction {
 
 	private $db;
 
@@ -10,9 +10,9 @@ class MysqlAction implements IAction {
 
 	private $assertion;
 
-	public function __construct($db, $query, $assertion) {
-		$this->db = $db;
-		$this->query = $query;
+	public function __construct($mysqlQuery, $assertion) {
+		$this->db = $mysqlQuery->db;
+		$this->query = $mysqlQuery->query;
 		$this->assertion = $assertion;
 	}
 
@@ -31,6 +31,7 @@ class MysqlAction implements IAction {
 		}
 		$this->query[2] = $cs;
 		$rs = call_user_func_array(array($this->db, 'select'), $this->query);
+		//var_dump($this->db);
 		$c->setCurrent(array(
 			"name" => get_called_class(),
 			"query" => $this->query,
@@ -42,14 +43,17 @@ class MysqlAction implements IAction {
 	}
 
 	public function assert($c) {
-		$rs = $this->assertion->assert($c->current["result"]);
+		if (!$this->assertion) {
+			return;
+		}
+		$rs = $this->assertion->assert($c);
 		$c->setCurrent(array('assert' => $this->assertion->config));
 		if (!$rs) {
 			assert(false, "assert mysql fail, current " . print_r($c->current, 1));
 			exit;
 		}
-		$c->setCurrent(array('package_id' => $rs['package_id']));
-		echo "assert success..." . PHP_EOL;
+		$c->setC(array('package_id' => $rs['package_id']));
+		echo get_called_class() .  " success..." . PHP_EOL;
 	}
 
 }

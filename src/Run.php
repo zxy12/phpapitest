@@ -2,18 +2,6 @@
 
 namespace apitest;
 
-// assert_options(ASSERT_ACTIVE, 1);
-// assert_options(ASSERT_WARNING, 0);
-//assert_options(ASSERT_QUIET_EVAL, 1);
-
-// Create a handler function
-function my_assert_handler($file, $line, $code)
-{
-    echo "<hr>Assertion Failed:File '$file'<br />Line '$line'<br />Code '$code'<br /><hr />";
-    exit;
-}
-//assert_options(ASSERT_CALLBACK, 'my_assert_handler');
-
 class Run {
 	
 	public $context = array();
@@ -50,9 +38,19 @@ class Run {
 		$this->current = array_merge($arr, $this->current);
 	}
 
+	public function setC($arr) {
+		if (!is_array($arr)) {
+			return;
+		}
+		if (empty($this->current['c'])) {
+			$this->current['c'] = array();
+		}
+		$this->current['c'] = array_merge($this->current['c'], $arr);
+	}
+
 	public function getBefore($key) {
 		if (($c = count($this->context)) > 0) {
-			return $this->context[$c - 1][$key];
+			return $this->context[$c - 1]['c'][$key];
 		}
 		return null;
 	}

@@ -1,9 +1,10 @@
 <?php
 
 namespace apitest\assert;
+
 use apitest\ContextBefore;
 
-class MysqlAssertionCol {
+class HttpAssertionEqual {
 	public $config = array();
 	public function __construct($config) {
 		$this->config = $config;
@@ -11,16 +12,15 @@ class MysqlAssertionCol {
 
 	public function assert($c) {
 		$result = $c->current['result'];
-		if (!is_array($result) || count($result) != 1) {
+		if (empty($result) || !is_array($result)) {
 			return false;
 		}
 
-		$result = $result[0];
 
 		foreach ($this->config as $key => $val) {
+
 			if ($val instanceof ContextBefore) {
 				$val = $c->getBefore($val->name);
-				
 			}
 			if ($result[$key] != $val) {
 				return false;
