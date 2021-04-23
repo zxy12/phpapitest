@@ -4,11 +4,11 @@ namespace apitest;
 
 abstract class MysqlAction implements IAction {
 
-	private $db;
+	protected $db;
 
-	private $query;
+	protected $query;
 
-	private $assertion;
+	protected $assertion;
 
 	public function __construct($mysqlQuery, $assertion) {
 		$this->db = $mysqlQuery->db;
