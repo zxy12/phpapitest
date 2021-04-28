@@ -38,7 +38,7 @@ class Run {
 		$this->current = array_merge($arr, $this->current);
 	}
 
-	public function setC($arr) {
+	public function setAssert($arr) {
 		if (!is_array($arr)) {
 			return;
 		}

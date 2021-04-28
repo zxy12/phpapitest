@@ -46,13 +46,25 @@ abstract class MysqlAction implements IAction {
 		if (!$this->assertion) {
 			return;
 		}
-		$rs = $this->assertion->assert($c);
-		$c->setCurrent(array('assert' => $this->assertion->config));
-		if (!$rs) {
-			assert(false, "assert mysql fail, current " . print_r($c->current, 1));
-			exit;
+		if (is_array($this->assertion)) {
+			foreach ($this->assertion as $ast) {
+				$rs = $ast->assert($c);
+				$c->setCurrent(array('assert' => $ast->config));
+				if (!$rs) {
+					assert(false, "assert mysql fail, current " . print_r($c->current, 1));
+					exit;
+				}
+				$c->setAssert($ast->config);
+			}
+		} else {
+			$rs = $this->assertion->assert($c);
+			$c->setCurrent(array('assert' => $this->assertion->config));
+			if (!$rs) {
+				assert(false, "assert mysql fail, current " . print_r($c->current, 1));
+				exit;
+			}
+			$c->setAssert($this->assertion->config);
 		}
-		$c->setC(array('package_id' => $rs['package_id']));
 		echo get_called_class() .  " success..." . PHP_EOL;
 	}
 

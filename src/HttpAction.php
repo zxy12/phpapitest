@@ -26,6 +26,26 @@ abstract class HttpAction implements IAction {
 	}
 
 	public function read($c) {
+		if (strtolower($this->request->method) == "get") {
+			$url = $this->request->url;
+			if ($this->request->query) {
+				if (is_array($this->request->query)) {
+					foreach ($this->request->query as $key => $val) {
+						if ($val instanceof ContextBefore) {
+							$val = $c->getBefore($val->name);
+						}
+						$this->request->query[$key] = $val;
+					}
+					$this->request->query = http_build_query($this->request->query);
+				}
+				$url = $url . "?" . $this->request->query;
+			}
+			$r = $this->snoopy->fetch($url);
+			$c->setCurrent(array(
+				"response" => $this->snoopy->results,
+			));
+       		$this->getResponse($c);
+		}
 	}
 
 	public function write($c) {
@@ -49,12 +69,28 @@ abstract class HttpAction implements IAction {
 		if (!$this->assertion) {
 			return;
 		}
-		$c->setCurrent(array('assert' => $this->assertion->config));
-		$rs = $this->assertion->assert($c);
-		if (!$rs) {
-			assert(false, "assert http fail, current " . print_r($c->current, 1));
-			exit;
+		
+
+		if (is_array($this->assertion)) {
+			foreach ($this->assertion as $ast) {
+				$rs = $ast->assert($c);
+				$c->setCurrent(array('assert' => $ast->config));
+
+				if (!$rs) {
+					assert(false, "assert http fail, current " . print_r($c->current, 1));
+					exit;
+				}
+			}
+		} else {
+			$rs = $this->assertion->assert($c);
+			$c->setCurrent(array('assert' => $this->assertion->config));
+			
+			if (!$rs) {
+				assert(false, "assert http fail, current " . print_r($c->current, 1));
+				exit;
+			}
 		}
+
 		echo get_called_class() .  " success..." . PHP_EOL;
 	}
 

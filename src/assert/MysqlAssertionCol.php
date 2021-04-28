@@ -20,7 +20,7 @@ class MysqlAssertionCol {
 		foreach ($this->config as $key => $val) {
 			if ($val instanceof ContextBefore) {
 				$val = $c->getBefore($val->name);
-				
+				$this->config[$key] = $val;
 			}
 			if ($result[$key] != $val) {
 				return false;
