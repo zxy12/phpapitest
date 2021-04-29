@@ -10,7 +10,7 @@ abstract class MysqlAction implements IAction {
 
 	protected $assertion;
 
-	public function __construct($mysqlQuery, $assertion) {
+	public function __construct($mysqlQuery, $assertion=null) {
 		$this->db = $mysqlQuery->db;
 		$this->query = $mysqlQuery->query;
 		$this->assertion = $assertion;
