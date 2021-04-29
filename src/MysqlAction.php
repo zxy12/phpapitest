@@ -54,7 +54,7 @@ abstract class MysqlAction implements IAction {
 					assert(false, "assert mysql fail, current " . print_r($c->current, 1));
 					exit;
 				}
-				$c->setAssert($ast->config);
+				$c->setNextData($ast->config);
 			}
 		} else {
 			$rs = $this->assertion->assert($c);
@@ -63,7 +63,7 @@ abstract class MysqlAction implements IAction {
 				assert(false, "assert mysql fail, current " . print_r($c->current, 1));
 				exit;
 			}
-			$c->setAssert($this->assertion->config);
+			$c->setNextData($this->assertion->config);
 		}
 		echo get_called_class() .  " success..." . PHP_EOL;
 	}
