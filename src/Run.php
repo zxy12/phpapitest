@@ -20,6 +20,16 @@ class Run {
 
 			$this->after();
 		}
+		$this->successLog();
+	}
+
+	public function successLog() {
+		$this->before();
+
+		echo "All task has successed.\n";
+		echo "found detail log at ./t.log";
+		$log = json_encode($this->context, JSON_PRETTY_PRINT);
+		file_put_contents("./t.log", $log);
 	}
 
 
